@@ -21,13 +21,17 @@ function buildCsp(isDev: boolean): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    "connect-src 'self'",
+    `connect-src 'self'${isDev ? " ws://127.0.0.1:* ws://localhost:*" : ""}`,
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
     "object-src 'none'",
-    "upgrade-insecure-requests",
   ];
+
+  if (!isDev) {
+    directives.push("upgrade-insecure-requests");
+  }
+
   return directives.join("; ");
 }
 
