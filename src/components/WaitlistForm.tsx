@@ -7,6 +7,7 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function WaitlistForm({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
@@ -19,7 +20,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, website }),
       });
 
       const data = await res.json();
@@ -34,6 +35,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       setMessage("Listo. Te avisaremos cuando abramos acceso.");
       setEmail("");
       setName("");
+      setWebsite("");
     } catch {
       setStatus("error");
       setMessage("Error de conexión. Intenta de nuevo.");
@@ -57,11 +59,23 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       onSubmit={handleSubmit}
       className={`flex w-full flex-col gap-3 ${compact ? "max-w-md" : "max-w-lg"}`}
     >
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="pointer-events-none absolute h-0 w-0 opacity-0"
+      />
       {!compact && (
         <input
           type="text"
           placeholder="Nombre (opcional)"
           value={name}
+          maxLength={100}
+          autoComplete="name"
           onChange={(e) => setName(e.target.value)}
           className="rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-silver-muted outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20"
         />
@@ -72,6 +86,8 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
           required
           placeholder="tu@correo.com"
           value={email}
+          maxLength={254}
+          autoComplete="email"
           onChange={(e) => setEmail(e.target.value)}
           className="flex-1 rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-silver-muted outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20"
         />

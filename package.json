@@ -6,7 +6,8 @@
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.0",

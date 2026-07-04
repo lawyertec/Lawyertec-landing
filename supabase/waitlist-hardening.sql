@@ -1,29 +1,28 @@
--- Run this in your Supabase SQL Editor to create the waitlist table.
+# Hardening migration — run if you already created the waitlist table
 
-create table if not exists public.waitlist (
-  id uuid primary key default gen_random_uuid(),
-  email text not null,
-  name text,
-  created_at timestamptz not null default now(),
-  constraint waitlist_email_unique unique (email),
-  constraint waitlist_email_format check (
+alter table public.waitlist
+  drop constraint if exists waitlist_email_format,
+  drop constraint if exists waitlist_name_length;
+
+alter table public.waitlist
+  add constraint waitlist_email_format check (
     email ~* '^[^\s@]+@[^\s@]+\.[^\s@]+$'
     and length(email) <= 254
   ),
-  constraint waitlist_name_length check (
+  add constraint waitlist_name_length check (
     name is null or length(name) <= 100
-  )
-);
+  );
 
-create index if not exists waitlist_created_at_idx
-  on public.waitlist (created_at desc);
-
-alter table public.waitlist enable row level security;
+drop policy if exists "Allow anonymous inserts" on public.waitlist;
+drop policy if exists "No public reads" on public.waitlist;
+drop policy if exists "Allow validated anonymous inserts" on public.waitlist;
+drop policy if exists "Deny anonymous reads" on public.waitlist;
+drop policy if exists "Deny anonymous updates" on public.waitlist;
+drop policy if exists "Deny anonymous deletes" on public.waitlist;
 
 revoke all on public.waitlist from anon, authenticated;
 grant insert on public.waitlist to anon;
 
--- Validated inserts only; no reads/updates/deletes for public roles.
 create policy "Allow validated anonymous inserts"
   on public.waitlist
   for insert
