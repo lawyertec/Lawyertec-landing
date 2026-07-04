@@ -1,6 +1,7 @@
 import Header, {
   Hero,
   Features,
+  Stats,
   HowItWorks,
   WaitlistSection,
   Footer,
@@ -13,6 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
+        <Stats />
         <HowItWorks />
         <WaitlistSection />
       </main>

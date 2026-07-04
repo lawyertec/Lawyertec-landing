@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Elms_Sans, Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const elmsSans = Elms_Sans({
+  variable: "--font-elms",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -25,8 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-navy-950 text-white">
+    <html
+      lang="es"
+      className={`${inter.variable} ${elmsSans.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-navy-950 font-sans text-white">
         {children}
       </body>
     </html>
