@@ -4,7 +4,7 @@
 
 If you discover a security issue in Lawyertec, please report it responsibly.
 
-**Email:** security@lawyertec.mx
+**Email:** security@lawyertec.com
 
 Please include:
 - Description of the issue

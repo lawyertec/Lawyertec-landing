@@ -39,8 +39,8 @@ export default function PrivacidadPage() {
             <p>
               Puedes solicitar la eliminación de tus datos en cualquier momento
               escribiéndonos a{" "}
-              <a href="mailto:privacidad@lawyertec.mx" className="text-silver underline">
-                privacidad@lawyertec.mx
+              <a href="mailto:privacidad@lawyertec.com" className="text-silver underline">
+                privacidad@lawyertec.com
               </a>
               .
             </p>

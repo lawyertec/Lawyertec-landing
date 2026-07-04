@@ -1,4 +1,4 @@
-Contact: security@lawyertec.mx
+Contact: security@lawyertec.com
 Preferred-Languages: es, en
-Canonical: https://lawyertec.mx/.well-known/security.txt
+Canonical: https://lawyertec.com/.well-known/security.txt
 Policy: https://github.com/YOUR_USER/lawyertec-landing/blob/main/SECURITY.md
