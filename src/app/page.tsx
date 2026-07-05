@@ -7,6 +7,7 @@ import Header, {
   WaitlistSection,
   Footer,
 } from "@/components/Landing";
+import UseCasesSection from "@/components/UseCasesSection";
 import JsonLd from "@/components/JsonLd";
 import { createPageMetadata } from "@/lib/metadata";
 import { homePageJsonLd } from "@/lib/json-ld";
@@ -32,6 +33,7 @@ export default function Home() {
         <Hero />
         <Features />
         <Stats />
+        <UseCasesSection />
         <HowItWorks />
         <WaitlistSection />
       </main>

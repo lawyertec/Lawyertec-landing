@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const QUESTION =
   "¿Cuál es el plazo de prescripción para esta acción mercantil según el Código de Comercio?";
@@ -92,19 +92,32 @@ export default function ChatDemo() {
     TOOLS.forEach((_, i) => push(() => setActiveTool(i), 1400 + i * 750));
 
     const answerStart = 1400 + TOOLS.length * 750 + 250;
-    push(() => setPhase("answering"), answerStart);
+    push(() => {
+      setPhase("answering");
+      setTyped(ANSWER);
+    }, answerStart);
 
-    for (let i = 1; i <= ANSWER.length; i++) {
-      push(() => setTyped(ANSWER.slice(0, i)), answerStart + i * 18);
-    }
-
-    push(() => setPhase("done"), answerStart + ANSWER.length * 18 + 200);
+    push(() => setPhase("done"), answerStart + 500);
 
     return () => {
       timers.current.forEach(clearTimeout);
       timers.current = [];
     };
   }, []);
+
+  const highlightedAnswer = useMemo(
+    () =>
+      typed.split(/(10 años|12 mar 2029|art\. 1043)/g).map((part, i) =>
+        part === "10 años" || part === "12 mar 2029" || part === "art. 1043" ? (
+          <span key={i} className="font-semibold text-gold">
+            {part}
+          </span>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      ),
+    [typed],
+  );
 
   return (
     <div className="rounded-lg bg-navy-900/80 p-5">
@@ -149,18 +162,12 @@ export default function ChatDemo() {
 
         {(phase === "answering" || phase === "done") && (
           <div className="rounded-2xl rounded-bl-sm border border-white/5 bg-navy-950/60 px-4 py-3">
-            <p className={`text-white ${phase === "answering" ? "caret" : ""}`}>
-              {typed.split(/(10 años|12 mar 2029|art\. 1043)/g).map((part, i) =>
-                part === "10 años" ||
-                part === "12 mar 2029" ||
-                part === "art. 1043" ? (
-                  <span key={i} className="font-semibold text-gold">
-                    {part}
-                  </span>
-                ) : (
-                  <span key={i}>{part}</span>
-                )
-              )}
+            <p
+              className={`text-white ${
+                phase === "answering" ? "animate-fade-in" : ""
+              }`}
+            >
+              {highlightedAnswer}
             </p>
             {phase === "done" && (
               <p className="mt-2 flex items-center gap-1.5 text-xs text-silver-muted">
