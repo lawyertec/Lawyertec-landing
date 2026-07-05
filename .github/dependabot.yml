@@ -14,3 +14,7 @@ updates:
         dependency-type: development
         patterns:
           - "*"
+    ignore:
+      # Payload CMS requires graphql ^16.8.1; v17 breaks npm peer resolution.
+      - dependency-name: graphql
+        update-types: ["version-update:semver-major"]
