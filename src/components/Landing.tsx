@@ -158,7 +158,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="animate-fade-up opacity-0-start mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium tracking-wide text-silver uppercase backdrop-blur-sm">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-soft" />

@@ -390,7 +390,13 @@ h3,
 }
 
 .opacity-0-start {
-  opacity: 0;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .opacity-0-start {
+    opacity: 0;
+  }
 }
 
 /* ---------- Scroll reveal ---------- */
@@ -421,6 +427,20 @@ h3,
   .btn-shine::after,
   .caret::after {
     animation: none !important;
+  }
+
+  .text-sheen,
+  .text-sheen-navy {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
+  }
+
+  .opacity-0-start {
+    opacity: 1;
+    transform: none;
   }
 
   .reveal {
