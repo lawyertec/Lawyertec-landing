@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Elms_Sans, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { rootMetadata } from "@/lib/metadata";
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-navy-950 font-sans text-white">
         {children}
+        <Analytics />
       </body>
     </html>
   );
