@@ -6,12 +6,15 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  fallback: ["system-ui", "sans-serif"],
 });
 
 const elmsSans = Elms_Sans({
   variable: "--font-elms",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  fallback: ["Inter", "system-ui", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = rootMetadata;
