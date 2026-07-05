@@ -1,68 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { UseCasesSectionData } from "@/lib/landing-content";
 
-const useCases = [
-  {
-    image: "/images/optimized/timon-studler-ABGaVhJxwDQ-unsplash.jpg",
-    title: "Plazos bajo presión",
-    caption:
-      "Calcula fechas límite y montos legales cuando el tiempo apremia y no puedes permitirte un error.",
-  },
-  {
-    image: "/images/optimized/clarisse-meyer-jKU2NneZAbI-unsplash.jpg",
-    title: "Investigación doctrinal",
-    caption:
-      "Encuentra artículos, reglamentos y criterios relevantes en minutos — con citas listas para tu escrito.",
-  },
-  {
-    image: "/images/optimized/nastuh-abootalebi-eHD8Y1Znfpk-unsplash.jpg",
-    title: "Consultas con clientes",
-    caption:
-      "Responde con artículos citables en la sala de juntas, sin pausar la conversación para buscar fuera.",
-  },
-  {
-    image: "/images/optimized/matthew-henry-VviFtDJakYk-unsplash.jpg",
-    title: "Derecho corporativo",
-    caption:
-      "Analiza cláusulas societarias y riesgos contractuales en operaciones de alto volumen con respuestas verificables.",
-  },
-  {
-    image: "/images/optimized/sebastian-pichler-bAQH53VquTc-unsplash.jpg",
-    title: "Jurisprudencia y precedentes",
-    caption:
-      "Localiza criterios de tribunales superiores para fundamentar tu estrategia antes de una audiencia clave.",
-  },
-  {
-    image: "/images/optimized/harry-cao-DG87bwGRRqs-unsplash.jpg",
-    title: "Equipos jurídicos",
-    caption:
-      "Estandariza la calidad de investigación de todo el despacho en casos complejos y de alto impacto.",
-  },
-  {
-    image: "/images/optimized/juan-luis-alejos-KJgoOAxq9ns-unsplash.jpg",
-    title: "Contratos en la Ciudad de México",
-    caption:
-      "Valida obligaciones mercantiles y plazos del Código de Comercio antes de una reunión con tu cliente en Reforma.",
-  },
-  {
-    image: "/images/optimized/patrick-fore-H5Lf0nGyetk-unsplash.jpg",
-    title: "Demandas y procedimientos",
-    caption:
-      "Confirma requisitos procesales, plazos y fundamento legal antes de presentar un escrito.",
-  },
-  {
-    image: "/images/optimized/bhargava-marripati-7LDBKPWAHJ4-unsplash.jpg",
-    title: "Legislación federal y local",
-    caption:
-      "Cruza la Constitución, leyes federales y ordenamientos locales sin saltar entre fuentes dispersas.",
-  },
-] as const;
+type UseCasesCarouselProps = {
+  items: UseCasesSectionData["items"];
+};
 
 const arrowButtonClass =
   "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-navy-950/10 bg-white text-navy-950 shadow-sm transition hover:border-accent/30 hover:bg-accent/5 disabled:cursor-not-allowed disabled:opacity-40 sm:h-11 sm:w-11";
 
-export default function UseCasesCarousel() {
+export default function UseCasesCarousel({ items }: UseCasesCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -105,7 +53,7 @@ export default function UseCasesCarousel() {
       track.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
     };
-  }, [updateScrollState]);
+  }, [updateScrollState, items.length]);
 
   function scrollToIndex(index: number) {
     const track = trackRef.current;
@@ -121,7 +69,7 @@ export default function UseCasesCarousel() {
   }
 
   function scrollByDirection(direction: -1 | 1) {
-    scrollToIndex(Math.min(useCases.length - 1, Math.max(0, activeIndex + direction)));
+    scrollToIndex(Math.min(items.length - 1, Math.max(0, activeIndex + direction)));
   }
 
   return (
@@ -144,9 +92,9 @@ export default function UseCasesCarousel() {
           className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           aria-label="Casos de uso de Lawyertec"
         >
-          {useCases.map((item, index) => (
+          {items.map((item, index) => (
             <figure
-              key={item.image}
+              key={`${item.image}-${index}`}
               data-slide
               className="w-[min(78vw,300px)] shrink-0 snap-center sm:w-[340px]"
             >

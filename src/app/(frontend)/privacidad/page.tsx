@@ -4,6 +4,7 @@ import Header, { Footer } from "@/components/Landing";
 import JsonLd from "@/components/JsonLd";
 import { createPageMetadata } from "@/lib/metadata";
 import { privacyPageJsonLd } from "@/lib/json-ld";
+import { getLandingContent } from "@/lib/get-landing-content";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Política de privacidad",
@@ -18,11 +19,13 @@ export const metadata: Metadata = createPageMetadata({
   ],
 });
 
-export default function PrivacidadPage() {
+export default async function PrivacidadPage() {
+  const content = await getLandingContent();
+
   return (
     <>
       <JsonLd data={privacyPageJsonLd()} />
-      <Header />
+      <Header content={content} />
       <main id="main-content" className="mx-auto max-w-2xl px-6 pt-32 pb-20">
         <h1 className="text-3xl font-semibold text-white">Política de privacidad</h1>
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-silver-muted">

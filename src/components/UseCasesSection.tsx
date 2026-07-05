@@ -4,13 +4,18 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
 import { UseCasesCarouselSkeleton } from "./UseCasesCarousel";
+import type { UseCasesSectionData } from "@/lib/landing-content";
 
 const UseCasesCarousel = dynamic(() => import("./UseCasesCarousel"), {
   ssr: false,
   loading: () => <UseCasesCarouselSkeleton />,
 });
 
-export default function UseCasesSection() {
+type UseCasesSectionProps = {
+  content: Omit<UseCasesSectionData, "blockType">;
+};
+
+export default function UseCasesSection({ content }: UseCasesSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [shouldLoadCarousel, setShouldLoadCarousel] = useState(false);
 
@@ -43,19 +48,20 @@ export default function UseCasesSection() {
       <div ref={sectionRef} className="relative mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
         <Reveal className="mx-auto mb-12 max-w-3xl text-center">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            Casos reales
+            {content.eyebrow}
           </p>
           <h2 className="text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
-            Hecho para la práctica diaria
+            {content.title}
           </h2>
-          <p className="mt-4 text-navy-muted">
-            Desde litigio y contratos hasta plazos urgentes — Lawyertec responde donde más lo
-            necesitas.
-          </p>
+          <p className="mt-4 text-navy-muted">{content.subtitle}</p>
         </Reveal>
 
         <Reveal delay={120}>
-          {shouldLoadCarousel ? <UseCasesCarousel /> : <UseCasesCarouselSkeleton />}
+          {shouldLoadCarousel ? (
+            <UseCasesCarousel items={content.items} />
+          ) : (
+            <UseCasesCarouselSkeleton />
+          )}
         </Reveal>
       </div>
     </section>

@@ -8,17 +8,22 @@ Landing page for Lawyertec — AI legal assistant for Mexican lawyers.
 - React + TypeScript
 - Tailwind CSS v4
 - Supabase (waitlist storage)
+- Payload CMS (landing content at `/admin`)
 
 ## Getting started
 
 ```bash
 npm install
-cp env.example .env.local
-# Add your Supabase credentials
+cp env.example .env
+# Add Supabase + Payload credentials (see env.example)
+npx payload migrate   # first time only — creates CMS tables
+npm run seed            # optional — loads default copy + admin user
 npm run dev
 ```
 
-Open [http://127.0.0.1:3000](http://127.0.0.1:3000).
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000). CMS admin: [http://127.0.0.1:3000/admin](http://127.0.0.1:3000/admin).
+
+Editors: see [docs/editing-content.md](./docs/editing-content.md) (Spanish).
 
 ## Supabase setup
 
@@ -32,11 +37,23 @@ If you already created the table, run `supabase/waitlist-hardening.sql` to apply
 
 ## Deploy
 
-Deploy to Vercel and add the same environment variables. Optionally set `ALLOWED_ORIGINS` to restrict the waitlist API to your production domain(s).
+Deploy to Vercel and add environment variables from `env.example`:
+
+- Supabase: `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_ANON_KEY`
+- Payload: `DATABASE_URI`, `PAYLOAD_SECRET` (required — app fails to start without them)
+- Media uploads: `BLOB_READ_WRITE_TOKEN` (Vercel Blob store)
+- **Required:** `ALLOWED_ORIGINS`, `NEXT_PUBLIC_SITE_URL` (waitlist + Payload CORS/CSRF)
+- **Required before go-live:** `PAYLOAD_SEED_EMAIL` + `PAYLOAD_SEED_PASSWORD`, then `npm run seed` (closes first-register)
+- Optional: `VERCEL_DEPLOY_HOOK_URL` (rebuild site when CMS content is saved)
+
+Build runs `payload generate:importmap`, `payload migrate`, then `next build`.
+
+Editors: see [docs/editing-content.md](./docs/editing-content.md) — includes Live Preview and drag-and-drop images.
 
 ## Security
 
-- Security headers (CSP, HSTS, X-Frame-Options, etc.) via middleware
+- Payload CMS: CORS/CSRF allowlists, secure auth cookies in production, `maxDepth` cap on API queries
+- Security headers (CSP, HSTS, X-Frame-Options, etc.) via proxy middleware; safe headers on `/admin`
 - Waitlist API: rate limiting, honeypot, input validation, body size limits
 - Supabase RLS: insert-only for anon, validated email/name constraints
 - Dependabot + weekly npm audit CI
@@ -44,6 +61,9 @@ Deploy to Vercel and add the same environment variables. Optionally set `ALLOWED
 
 **Production checklist:**
 - [ ] Use `SUPABASE_ANON_KEY` only (never service role on the landing page)
-- [ ] Set `ALLOWED_ORIGINS` in Vercel
+- [ ] Set `DATABASE_URI`, `PAYLOAD_SECRET`, and `BLOB_READ_WRITE_TOKEN` in Vercel
+- [ ] Set `ALLOWED_ORIGINS` and `NEXT_PUBLIC_SITE_URL` in Vercel
+- [ ] Run `npm run seed` with `PAYLOAD_SEED_EMAIL`/`PAYLOAD_SEED_PASSWORD` before or immediately after first deploy
+- [ ] Set `VERCEL_DEPLOY_HOOK_URL` for CMS publish → rebuild
 - [ ] Enable Vercel DDoS protection / WAF
 - [ ] Enable GitHub secret scanning on the repo

@@ -1,18 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { LandingContent } from "@/lib/landing-content";
 
-const QUESTION =
-  "¿Cuál es el plazo de prescripción para esta acción mercantil según el Código de Comercio?";
-
-const TOOLS = [
-  { label: "Buscando en Código de Comercio", icon: "search" },
-  { label: "Calculando plazo y fecha límite", icon: "calc" },
-  { label: "Guardando en memoria legal", icon: "brain" },
-] as const;
-
-const ANSWER =
-  "Según el art. 1043 del Código de Comercio, el plazo de prescripción es de 10 años. Con base en la fecha del acto (12 mar 2019), la fecha límite es el 12 mar 2029.";
+type ChatDemoProps = {
+  content: LandingContent["chatDemo"];
+};
 
 type Phase = "asking" | "thinking" | "answering" | "done";
 
@@ -60,17 +53,25 @@ function ToolIcon({ name }: { name: string }) {
   );
 }
 
-export default function ChatDemo() {
+export default function ChatDemo({ content }: ChatDemoProps) {
   const [phase, setPhase] = useState<Phase>("asking");
   const [activeTool, setActiveTool] = useState(-1);
   const [typed, setTyped] = useState("");
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
+  const highlightPattern = useMemo(() => {
+    if (!content.highlightTerms.length) return null;
+    const escaped = content.highlightTerms.map((term) =>
+      term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    );
+    return new RegExp(`(${escaped.join("|")})`, "g");
+  }, [content.highlightTerms]);
+
   useEffect(() => {
     const finish = () => {
       setPhase("done");
-      setActiveTool(TOOLS.length - 1);
-      setTyped(ANSWER);
+      setActiveTool(content.tools.length - 1);
+      setTyped(content.answer);
     };
 
     const reduce =
@@ -89,12 +90,12 @@ export default function ChatDemo() {
     };
 
     push(() => setPhase("thinking"), 900);
-    TOOLS.forEach((_, i) => push(() => setActiveTool(i), 1400 + i * 750));
+    content.tools.forEach((_, i) => push(() => setActiveTool(i), 1400 + i * 750));
 
-    const answerStart = 1400 + TOOLS.length * 750 + 250;
+    const answerStart = 1400 + content.tools.length * 750 + 250;
     push(() => {
       setPhase("answering");
-      setTyped(ANSWER);
+      setTyped(content.answer);
     }, answerStart);
 
     push(() => setPhase("done"), answerStart + 500);
@@ -103,21 +104,21 @@ export default function ChatDemo() {
       timers.current.forEach(clearTimeout);
       timers.current = [];
     };
-  }, []);
+  }, [content.answer, content.tools]);
 
-  const highlightedAnswer = useMemo(
-    () =>
-      typed.split(/(10 años|12 mar 2029|art\. 1043)/g).map((part, i) =>
-        part === "10 años" || part === "12 mar 2029" || part === "art. 1043" ? (
-          <span key={i} className="font-semibold text-gold">
-            {part}
-          </span>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
+  const highlightedAnswer = useMemo(() => {
+    if (!highlightPattern) return typed;
+
+    return typed.split(highlightPattern).map((part, i) =>
+      content.highlightTerms.includes(part) ? (
+        <span key={i} className="font-semibold text-gold">
+          {part}
+        </span>
+      ) : (
+        <span key={i}>{part}</span>
       ),
-    [typed],
-  );
+    );
+  }, [content.highlightTerms, highlightPattern, typed]);
 
   return (
     <div className="rounded-lg bg-navy-900/80 p-5">
@@ -125,18 +126,16 @@ export default function ChatDemo() {
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-        <span className="ml-2 text-xs text-silver-muted">
-          Revisión de contrato — Proyecto Mercantil
-        </span>
+        <span className="ml-2 text-xs text-silver-muted">{content.projectTitle}</span>
       </div>
 
       <div className="space-y-3 text-sm">
         <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-navy-800/70 px-4 py-3 text-silver">
-          {QUESTION}
+          {content.question}
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {TOOLS.map((tool, i) => {
+          {content.tools.map((tool, i) => {
             const state =
               activeTool > i ? "done" : activeTool === i ? "active" : "idle";
             return (
@@ -146,15 +145,13 @@ export default function ChatDemo() {
                   state === "idle"
                     ? "border-white/5 text-silver-muted/40"
                     : state === "active"
-                    ? "border-accent/50 bg-accent/10 text-accent-soft shadow-[0_0_18px_-4px_rgba(79,125,255,0.6)]"
-                    : "border-white/10 text-silver-muted"
+                      ? "border-accent/50 bg-accent/10 text-accent-soft shadow-[0_0_18px_-4px_rgba(79,125,255,0.6)]"
+                      : "border-white/10 text-silver-muted"
                 }`}
               >
                 <ToolIcon name={tool.icon} />
                 {tool.label}
-                {state === "done" && (
-                  <span className="text-accent-soft">✓</span>
-                )}
+                {state === "done" && <span className="text-accent-soft">✓</span>}
               </span>
             );
           })}
@@ -162,17 +159,13 @@ export default function ChatDemo() {
 
         {(phase === "answering" || phase === "done") && (
           <div className="rounded-2xl rounded-bl-sm border border-white/5 bg-navy-950/60 px-4 py-3">
-            <p
-              className={`text-white ${
-                phase === "answering" ? "animate-fade-in" : ""
-              }`}
-            >
+            <p className={`text-white ${phase === "answering" ? "animate-fade-in" : ""}`}>
               {highlightedAnswer}
             </p>
             {phase === "done" && (
               <p className="mt-2 flex items-center gap-1.5 text-xs text-silver-muted">
                 <span className="text-accent-soft">↳</span>
-                Guardado en memoria · 3 referencias cruzadas
+                {content.footerNote}
               </p>
             )}
           </div>

@@ -1,0 +1,35 @@
+/* Payload admin — Lawyertec theme */
+
+:root {
+  --theme-bg: #040810;
+  --theme-input-bg: #0a1220;
+  --theme-elevation-0: #040810;
+  --theme-elevation-50: #0a1220;
+  --theme-elevation-100: #0f1828;
+  --theme-elevation-150: #152035;
+  --theme-elevation-200: #1a2840;
+  --theme-elevation-800: #c8d0dc;
+  --theme-elevation-900: #e8ecf2;
+  --theme-elevation-1000: #ffffff;
+  --theme-text: #e8ecf2;
+  --theme-success-500: #4f7dff;
+  --color-success-500: #4f7dff;
+}
+
+[data-theme="light"] {
+  --theme-bg: #f8f9fb;
+  --theme-input-bg: #ffffff;
+  --theme-elevation-0: #ffffff;
+  --theme-elevation-50: #f4f6f9;
+  --theme-elevation-100: #e8ecf2;
+  --theme-elevation-150: #dde2ea;
+  --theme-elevation-200: #d0d7e2;
+  --theme-elevation-800: #3d4a5c;
+  --theme-elevation-900: #1a2332;
+  --theme-elevation-1000: #040810;
+  --theme-text: #1a2332;
+}
+
+.template-default__wrap {
+  font-family: Inter, system-ui, sans-serif;
+}
