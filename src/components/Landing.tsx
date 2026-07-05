@@ -255,15 +255,16 @@ export function Features() {
 
 export function Stats() {
   return (
-    <section className="relative border-t border-white/5 py-16">
-      <div className="mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-white py-16">
+      <div className="pointer-events-none absolute inset-0 bg-grid-light" />
+      <div className="relative mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-3">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 100} className="text-center">
-              <div className="text-4xl font-semibold tracking-tight text-sheen sm:text-5xl">
+              <div className="text-4xl font-semibold tracking-tight text-sheen-navy sm:text-5xl">
                 {s.value}
               </div>
-              <p className="mt-2 text-sm text-silver-muted">{s.label}</p>
+              <p className="mt-2 text-sm text-navy-muted">{s.label}</p>
             </Reveal>
           ))}
         </div>
@@ -312,24 +313,23 @@ export function HowItWorks() {
 
 export function WaitlistSection() {
   return (
-    <section id="waitlist" className="relative overflow-hidden border-t border-white/5 py-20 sm:py-28">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="animate-aurora absolute left-1/2 top-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[120px]" />
-      </div>
+    <section id="waitlist" className="relative overflow-hidden bg-white py-20 sm:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-grid-light" />
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-[320px] w-[480px] -translate-x-1/2 rounded-full bg-accent/10 blur-[100px]" />
       <div className="relative mx-auto w-full max-w-[90rem] px-5 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl">
-          <div className="border-gradient rounded-3xl bg-navy-900/50 px-6 py-12 text-center backdrop-blur-sm sm:px-12">
-            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Acceso <span className="text-sheen">anticipado</span>
+          <div className="rounded-3xl border border-navy-950/10 bg-white px-6 py-12 text-center shadow-[0_24px_64px_-32px_rgba(4,8,16,0.18)] sm:px-12">
+            <h2 className="text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl">
+              Acceso <span className="text-sheen-navy">anticipado</span>
             </h2>
-            <p className="mt-4 text-silver-muted">
+            <p className="mt-4 text-navy-muted">
               Estamos preparando el lanzamiento. Únete a la lista de espera y sé de
               los primeros abogados en probar Lawyertec.
             </p>
             <div className="mt-8 flex justify-center">
-              <WaitlistForm />
+              <WaitlistForm theme="light" />
             </div>
-            <p className="mt-4 text-xs text-silver-muted/70">
+            <p className="mt-4 text-xs text-navy-muted/80">
               Sin spam. Solo te avisamos cuando abramos acceso.
             </p>
           </div>

@@ -11,6 +11,7 @@
   --accent: #4f7dff;
   --accent-soft: #6f97ff;
   --gold: #d8c48a;
+  --navy-muted: #5c6778;
 }
 
 @theme inline {
@@ -24,6 +25,7 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-gold: var(--gold);
+  --color-navy-muted: var(--navy-muted);
   --font-sans: var(--font-inter);
   --font-display: var(--font-elms), var(--font-inter), system-ui, sans-serif;
 }
@@ -68,6 +70,25 @@ h3,
   );
 }
 
+.bg-grid-light {
+  background-image: linear-gradient(
+      to right,
+      rgba(4, 8, 16, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(4, 8, 16, 0.055) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.gradient-divider-dark {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(4, 8, 16, 0.1),
+    transparent
+  );
+}
+
 .bg-noise {
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -96,6 +117,23 @@ h3,
     #ffffff 50%,
     #c8cdd4 70%,
     #ffffff 90%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+
+.text-sheen-navy {
+  background: linear-gradient(
+    110deg,
+    #040810 10%,
+    #4f7dff 32%,
+    #0a1220 50%,
+    #162544 68%,
+    #040810 90%
   );
   background-size: 220% auto;
   -webkit-background-clip: text;
@@ -379,6 +417,7 @@ h3,
   .animate-spin-slow,
   .animate-marquee,
   .text-sheen,
+  .text-sheen-navy,
   .btn-shine::after,
   .caret::after {
     animation: none !important;

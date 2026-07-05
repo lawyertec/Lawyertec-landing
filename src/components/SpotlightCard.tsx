@@ -5,9 +5,11 @@ import { useRef } from "react";
 export default function SpotlightCard({
   children,
   className = "",
+  variant = "dark",
 }: {
   children: React.ReactNode;
   className?: string;
+  variant?: "dark" | "light";
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -23,7 +25,7 @@ export default function SpotlightCard({
     <div
       ref={ref}
       onMouseMove={handleMove}
-      className={`spotlight border-gradient ${className}`}
+      className={`spotlight ${variant === "light" ? "" : "border-gradient"} ${className}`}
     >
       {children}
     </div>
