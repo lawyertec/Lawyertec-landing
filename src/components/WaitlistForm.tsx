@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { PRACTICE_AREAS, type PracticeArea } from "@/lib/practice-areas";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+const fieldClassName =
+  "rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20";
 
 export default function WaitlistForm({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [practiceArea, setPracticeArea] = useState<PracticeArea | "">("");
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -20,7 +25,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name, website }),
+        body: JSON.stringify({ email, name, practiceArea, website }),
       });
 
       const data = await res.json();
@@ -35,6 +40,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
       setMessage("Listo. Te avisaremos cuando abramos acceso.");
       setEmail("");
       setName("");
+      setPracticeArea("");
       setWebsite("");
     } catch {
       setStatus("error");
@@ -77,9 +83,27 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
           maxLength={100}
           autoComplete="name"
           onChange={(e) => setName(e.target.value)}
-          className="rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-silver-muted outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20"
+          className={`${fieldClassName} placeholder:text-silver-muted`}
         />
       )}
+      <select
+        required
+        value={practiceArea}
+        onChange={(e) => setPracticeArea(e.target.value as PracticeArea | "")}
+        aria-label="Área de práctica"
+        className={`${fieldClassName} ${
+          practiceArea === "" ? "text-silver-muted" : "text-white"
+        }`}
+      >
+        <option value="" disabled>
+          Área de práctica
+        </option>
+        {PRACTICE_AREAS.map((area) => (
+          <option key={area.value} value={area.value} className="bg-navy-900 text-white">
+            {area.label}
+          </option>
+        ))}
+      </select>
       <div className="flex flex-col gap-3 sm:flex-row">
         <input
           type="email"
@@ -89,7 +113,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
           maxLength={254}
           autoComplete="email"
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-silver-muted outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20"
+          className={`${fieldClassName} flex-1 placeholder:text-silver-muted`}
         />
         <button
           type="submit"

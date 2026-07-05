@@ -4,6 +4,7 @@ create table if not exists public.waitlist (
   id uuid primary key default gen_random_uuid(),
   email text not null,
   name text,
+  practice_area text not null,
   created_at timestamptz not null default now(),
   constraint waitlist_email_unique unique (email),
   constraint waitlist_email_format check (
@@ -12,6 +13,19 @@ create table if not exists public.waitlist (
   ),
   constraint waitlist_name_length check (
     name is null or length(name) <= 100
+  ),
+  constraint waitlist_practice_area_valid check (
+    practice_area in (
+      'corporate',
+      'labor',
+      'tax',
+      'criminal',
+      'civil',
+      'administrative',
+      'intellectual_property',
+      'constitutional',
+      'other'
+    )
   )
 );
 
@@ -32,6 +46,17 @@ create policy "Allow validated anonymous inserts"
     email ~* '^[^\s@]+@[^\s@]+\.[^\s@]+$'
     and length(email) <= 254
     and (name is null or length(name) <= 100)
+    and practice_area in (
+      'corporate',
+      'labor',
+      'tax',
+      'criminal',
+      'civil',
+      'administrative',
+      'intellectual_property',
+      'constitutional',
+      'other'
+    )
   );
 
 create policy "Deny anonymous reads"

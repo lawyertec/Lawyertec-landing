@@ -21,3 +21,5 @@ export function sanitizeName(raw: unknown): string | null {
 export function isHoneypotTripped(raw: unknown): boolean {
   return typeof raw === "string" && raw.trim().length > 0;
 }
+
+export { sanitizePracticeArea } from "./practice-areas";

@@ -5,6 +5,7 @@ import {
   isHoneypotTripped,
   sanitizeEmail,
   sanitizeName,
+  sanitizePracticeArea,
 } from "@/lib/validation";
 import { NextResponse } from "next/server";
 
@@ -46,6 +47,11 @@ export async function POST(request: Request) {
 
   const name = sanitizeName(payload.name);
 
+  const practiceArea = sanitizePracticeArea(payload.practiceArea);
+  if (!practiceArea) {
+    return jsonError("Selecciona un área de práctica.", 400);
+  }
+
   const supabase = createSupabaseServerClient();
   if (!supabase) {
     return jsonError("El servicio no está configurado. Intenta más tarde.", 503);
@@ -54,6 +60,7 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("waitlist").insert({
     email,
     name,
+    practice_area: practiceArea,
   });
 
   if (error) {
