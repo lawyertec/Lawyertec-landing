@@ -1,0 +1,50 @@
+# Lawyertec
+
+> Agente de IA legal especializado en derecho mexicano para abogados y despachos.
+
+Lawyertec ayuda a abogados en México a investigar legislación, reglamentos y jurisprudencia en tiempo real, calcular plazos y montos legales, revisar contratos y demandas, y conservar hallazgos en una memoria legal personal con respuestas citables.
+
+## Producto
+
+- Investigación legal en vivo sobre ordenamientos mexicanos
+- Cálculo de plazos, fechas límite y montos
+- Revisión de contratos, demandas y dictámenes
+- Memoria legal personal con referencias cruzadas
+- Organización por proyectos y chats legales
+- Respuestas con fundamento normativo y citas verificables
+
+## Fuentes legales cubiertas
+
+- Código Civil Federal
+- Código de Comercio
+- Ley Federal del Trabajo
+- Código Fiscal de la Federación
+- Jurisprudencia SCJN
+- Ley del Seguro Social
+- Código Nacional de Procedimientos Penales
+- Ley de Amparo
+- Constitución Política de los Estados Unidos Mexicanos
+
+## Páginas principales
+
+- Inicio: https://lawyertec.com/
+- Política de privacidad: https://lawyertec.com/privacidad
+- Mapa del sitio: https://lawyertec.com/sitemap.xml
+
+## Audiencia
+
+Abogados, litigantes, asesores legales, equipos jurídicos y despachos en México que necesitan investigación jurídica rigurosa con IA.
+
+## Idioma y mercado
+
+- Idioma: español (México)
+- Mercado: México
+
+## Contacto
+
+- Privacidad: privacidad@lawyertec.com
+- Seguridad: security@lawyertec.com
+
+## Estado
+
+Lawyertec se encuentra en lista de espera para acceso anticipado. El sitio permite registrarse con correo electrónico para recibir avisos de lanzamiento.

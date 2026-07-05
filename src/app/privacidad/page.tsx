@@ -1,17 +1,29 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import Header, { Footer } from "@/components/Landing";
+import JsonLd from "@/components/JsonLd";
+import { createPageMetadata } from "@/lib/metadata";
+import { privacyPageJsonLd } from "@/lib/json-ld";
 
-export const metadata: Metadata = {
-  title: "Privacidad — Lawyertec",
-  description: "Política de privacidad de Lawyertec.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Política de privacidad",
+  description:
+    "Política de privacidad de Lawyertec: qué datos recopilamos en la lista de espera, cómo los almacenamos en Supabase y cómo ejercer tus derechos.",
+  path: "/privacidad",
+  keywords: [
+    "política de privacidad",
+    "Lawyertec privacidad",
+    "datos personales",
+    "lista de espera",
+  ],
+});
 
 export default function PrivacidadPage() {
   return (
     <>
+      <JsonLd data={privacyPageJsonLd()} />
       <Header />
-      <main className="mx-auto max-w-2xl px-6 pt-32 pb-20">
+      <main id="main-content" className="mx-auto max-w-2xl px-6 pt-32 pb-20">
         <h1 className="text-3xl font-semibold text-white">Política de privacidad</h1>
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-silver-muted">
           <p>
