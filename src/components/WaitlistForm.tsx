@@ -6,7 +6,48 @@ import { PRACTICE_AREAS, type PracticeArea } from "@/lib/practice-areas";
 type Status = "idle" | "loading" | "success" | "error";
 
 const fieldClassName =
-  "rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm text-white outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20";
+  "w-full min-h-[46px] rounded-lg border border-white/10 bg-navy-900/80 px-4 py-3 text-sm leading-normal text-white outline-none transition focus:border-silver/40 focus:ring-1 focus:ring-silver/20";
+
+function PracticeAreaSelect({
+  value,
+  onChange,
+}: {
+  value: PracticeArea | "";
+  onChange: (value: PracticeArea | "") => void;
+}) {
+  return (
+    <div className="relative w-full">
+      <select
+        required
+        value={value}
+        onChange={(e) => onChange(e.target.value as PracticeArea | "")}
+        aria-label="Área de práctica"
+        className={`${fieldClassName} appearance-none pr-10 ${
+          value === "" ? "text-silver-muted" : "text-white"
+        }`}
+      >
+        <option value="" disabled>
+          Área de práctica
+        </option>
+        {PRACTICE_AREAS.map((area) => (
+          <option key={area.value} value={area.value} className="bg-navy-900 text-white">
+            {area.label}
+          </option>
+        ))}
+      </select>
+      <svg
+        className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-silver-muted"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+      </svg>
+    </div>
+  );
+}
 
 export default function WaitlistForm({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState("");
@@ -86,25 +127,8 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
           className={`${fieldClassName} placeholder:text-silver-muted`}
         />
       )}
-      <select
-        required
-        value={practiceArea}
-        onChange={(e) => setPracticeArea(e.target.value as PracticeArea | "")}
-        aria-label="Área de práctica"
-        className={`${fieldClassName} ${
-          practiceArea === "" ? "text-silver-muted" : "text-white"
-        }`}
-      >
-        <option value="" disabled>
-          Área de práctica
-        </option>
-        {PRACTICE_AREAS.map((area) => (
-          <option key={area.value} value={area.value} className="bg-navy-900 text-white">
-            {area.label}
-          </option>
-        ))}
-      </select>
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <PracticeAreaSelect value={practiceArea} onChange={setPracticeArea} />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
         <input
           type="email"
           required
@@ -118,7 +142,7 @@ export default function WaitlistForm({ compact = false }: { compact?: boolean })
         <button
           type="submit"
           disabled={status === "loading"}
-          className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-navy-950 transition hover:bg-silver disabled:opacity-60"
+          className="min-h-[46px] shrink-0 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-navy-950 transition hover:bg-silver disabled:opacity-60"
         >
           {status === "loading" ? "Enviando…" : "Unirme"}
         </button>
