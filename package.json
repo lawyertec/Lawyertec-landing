@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "payload generate:importmap && next dev --hostname 127.0.0.1",
-    "build": "payload generate:importmap && payload migrate && next build",
+    "build": "node scripts/build.mjs",
     "start": "next start",
     "lint": "eslint",
     "audit:prod": "npm audit --omit=dev --audit-level=high",

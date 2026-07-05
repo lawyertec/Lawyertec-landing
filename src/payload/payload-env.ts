@@ -3,6 +3,15 @@ import { getSiteUrl } from "../lib/site";
 export function requireProductionEnv(name: string, value: string | undefined): string {
   const trimmed = value?.trim();
   if (trimmed) return trimmed;
+
+  // GitHub Actions compile check — no secrets/DB (Vercel deploy sets VERCEL=1 and real env vars).
+  if (process.env.CI === "true" && !process.env.VERCEL) {
+    if (name === "PAYLOAD_SECRET") {
+      return "ci-build-only-do-not-use-in-production-min-32-chars";
+    }
+    return "";
+  }
+
   if (process.env.NODE_ENV === "production") {
     throw new Error(`Missing required environment variable: ${name}`);
   }
